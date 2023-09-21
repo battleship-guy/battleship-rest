@@ -1,5 +1,6 @@
 package nl.habiboellah.battleshiprest.config;
 
+import nl.habiboellah.battleshiprest.model.entity.Player;
 import nl.habiboellah.battleshiprest.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,16 @@ public class DatabaseConfig {
 
     @Bean
     CommandLineRunner populateDatabase(PlayerRepository repository) {
-        return args -> {
-            LOG.info("Starting with empty database");
-        };
+        if(config.getPopulateDatabase()) {
+            return args -> {
+                LOG.info("Populating database");
+                LOG.info("New player: " + repository.save(new Player("Bob Marley")));
+                LOG.info("New player: " + repository.save(new Player("Bruce Lee")));
+            };
+        } else {
+            return args -> {
+                LOG.info("Starting with empty database");
+            };
+        }
     }
 }
