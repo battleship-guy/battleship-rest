@@ -22,4 +22,8 @@ public class PlayerService {
     public Player getPlayerById(Long id) {
         return repository.findById(id).orElseThrow(() -> new PlayerNotFoundException(id.toString()));
     }
+
+    public Player addPlayer(Player player) {
+        return repository.save(player);
+    }
 }
