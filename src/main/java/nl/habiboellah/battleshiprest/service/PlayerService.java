@@ -26,4 +26,19 @@ public class PlayerService {
     public Player addPlayer(Player player) {
         return repository.save(player);
     }
+
+    public Player addPlayer(Player player, Long id) {
+        player.setId(id);
+        return this.addPlayer(player);
+    }
+
+    public Player updatePlayer(Player updatedPlayer, Long id) {
+
+        return repository.findById(id)
+                .map(p -> {
+                    p.setName(updatedPlayer.getName());
+                    return repository.save(p);
+                })
+                .orElseThrow(() -> new PlayerNotFoundException(id.toString()));
+    }
 }
