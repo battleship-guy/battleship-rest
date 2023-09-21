@@ -41,4 +41,12 @@ public class PlayerService {
                 })
                 .orElseThrow(() -> new PlayerNotFoundException(id.toString()));
     }
+
+    public void deletePlayer(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new PlayerNotFoundException(id.toString());
+        }
+    }
 }

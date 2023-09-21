@@ -52,4 +52,10 @@ public class PlayerController {
         }
         return assembler.toModel(player);
     }
+
+    @DeleteMapping("/players/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlayerByUserId(@PathVariable Long id) {
+        service.deletePlayer(id);
+    }
 }
