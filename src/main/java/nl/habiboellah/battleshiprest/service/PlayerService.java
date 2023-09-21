@@ -1,5 +1,6 @@
 package nl.habiboellah.battleshiprest.service;
 
+import nl.habiboellah.battleshiprest.exceptionhandling.PlayerAlreadyExistsException;
 import nl.habiboellah.battleshiprest.exceptionhandling.PlayerNotFoundException;
 import nl.habiboellah.battleshiprest.model.entity.Player;
 import nl.habiboellah.battleshiprest.repository.PlayerRepository;
@@ -24,7 +25,12 @@ public class PlayerService {
     }
 
     public Player addPlayer(Player player) {
-        return repository.save(player);
+        List<Player> playersWithSameName = repository.findByName(player.getName());
+        if(playersWithSameName.isEmpty()) {
+            return repository.save(player);
+        } else {
+            throw new PlayerAlreadyExistsException(player.getName());
+        }
     }
 
     public Player addPlayer(Player player, Long id) {

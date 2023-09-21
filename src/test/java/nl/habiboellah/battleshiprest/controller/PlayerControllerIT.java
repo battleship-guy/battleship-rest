@@ -25,6 +25,7 @@ public class PlayerControllerIT extends ControllerIT {
         String playerTwoName = "Bob";
         Long playerTwoId = 2L;
         subTestAddPlayer(playerTwoName, playerTwoId);
+        subTestAddAlreadyExistingPlayer(playerTwoName);
 
         subTestGetAllPlayers(2);
 
@@ -62,6 +63,12 @@ public class PlayerControllerIT extends ControllerIT {
         PlayerDto request = new PlayerDto(null, playerName);
         ResponseEntity<PlayerDto> playerDtoResponseEntity = this.restTemplate.postForEntity(getUrl(), request, PlayerDto.class);
         assertResponseEntityEquals(playerDtoResponseEntity, HttpStatus.CREATED, expectedId, playerName);
+    }
+
+    private void subTestAddAlreadyExistingPlayer(String playerName) {
+        PlayerDto request = new PlayerDto(null, playerName);
+        ResponseEntity<PlayerDto> playerDtoResponseEntity = this.restTemplate.postForEntity(getUrl(), request, null);
+        assertEquals(HttpStatus.CONFLICT, playerDtoResponseEntity.getStatusCode());
     }
 
     private void subTestGetPlayer(Long id, String expectedName) {

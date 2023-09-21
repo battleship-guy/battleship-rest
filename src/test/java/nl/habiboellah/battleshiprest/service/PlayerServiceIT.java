@@ -1,5 +1,6 @@
 package nl.habiboellah.battleshiprest.service;
 
+import nl.habiboellah.battleshiprest.exceptionhandling.PlayerAlreadyExistsException;
 import nl.habiboellah.battleshiprest.exceptionhandling.PlayerNotFoundException;
 import nl.habiboellah.battleshiprest.model.entity.Player;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ public class PlayerServiceIT {
         assertEquals(playerOne, playerService.addPlayer(playerOne));
         assertThrows(PlayerNotFoundException.class,()->playerService.updatePlayer(playerTwo, 2L));
         assertEquals(playerTwo, playerService.addPlayer(playerTwo));
+        assertThrows(PlayerAlreadyExistsException.class, () -> playerService.addPlayer(playerTwo));
         playerTwo.setName("Bert");
         assertEquals(playerTwo, playerService.updatePlayer(playerTwo, 2L));
 
